@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     build 'PES2UG21CS397-1'
-                    sh 'g++ ./main/not_a_file.cpp -o output'
+                    sh 'g++ main.cpp -o output'
                 }
             }
         }
