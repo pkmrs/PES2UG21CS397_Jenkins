@@ -1,35 +1,35 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
+pipeline{
+  agent any
+  stages {
+          stage('Clone repository'){
             steps {
-                script {
-                    build 'PES2UG21CS397-1'
-                    sh 'g++ main.cpp -o output'
-                }
+              checkout([$class: 'GitSCM',
+              branches: [[name: '*/main']],
+              userRemoteConfigs: [[url: 'https://github.com/pkmrs/PES2UG21CS397_Jenkins.git']]])
             }
-        }
-        stage('Test') {
-            steps {
-                script {
-                    
-                    sh './output'
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                script {
-                    echo 'deploy'
-                }
-            }
+          }
+    stage('Build'){
+        steps {
+          build 'PES2UG21CS397-1'
+          sh 'g++ sample.cpp -o output'
         }
     }
-
-    post {
-        failure {
-            error 'Pipeline failed'
+    stage('Test'){
+        steps {
+            sh './output'
+        }
+    }
+    stage('Deploy') {
+        steps {
+            echo 'deploy'
         }
     }
 }
+post{
+  failure{
+    error 'Pipeline failed'
+  }
+}
+}
+  
+  
